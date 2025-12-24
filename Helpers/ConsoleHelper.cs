@@ -1,4 +1,4 @@
-namespace BookTracker;
+namespace BookTracker.Helpers;
 
 class ConsoleHelper
 {
