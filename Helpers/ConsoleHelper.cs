@@ -15,7 +15,6 @@ class ConsoleHelper
         while (selecting)
         {
             Console.Clear();
-            Console.ResetColor();
             PrintCentered(message);
 
             foreach (MenuOptions option in Enum.GetValues(typeof(MenuOptions)))
@@ -24,10 +23,10 @@ class ConsoleHelper
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($">  {GetDescription(option)}");
+                    Console.ResetColor();
                 }
                 else
                 {
-                    Console.ResetColor();
                     Console.WriteLine($"   {GetDescription(option)}");
                 }
             }
@@ -123,10 +122,10 @@ class ConsoleHelper
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($">  {GetDescription(option)}");
+                    Console.ResetColor();
                 }
                 else
                 {
-                    Console.ResetColor();
                     Console.WriteLine($"   {GetDescription(option)}");
                 }
             }
