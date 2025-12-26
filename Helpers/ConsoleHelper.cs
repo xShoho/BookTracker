@@ -73,6 +73,7 @@ class ConsoleHelper
     public static (string, string, int, Genre) AddNewBookMenu()
     {
         Console.Clear();
+        Console.ResetColor();
         bool input = true;
         PrintCentered("Add New Book");
         string? title = string.Empty;

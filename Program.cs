@@ -19,6 +19,9 @@ while (running)
             running = false;
 
             break;
+        case MenuOptions.ViewAllBooks:
+
+            break;
         case MenuOptions.Exit:
             running = false;
 
