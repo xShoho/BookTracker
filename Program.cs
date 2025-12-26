@@ -20,7 +20,7 @@ while (running)
 
             break;
         case MenuOptions.ViewAllBooks:
-            ConsoleHelper.DisplayBooks(bookService.GetAllBooks());
+            ConsoleHelper.DisplayBooks(bookService.GetAllBooks(), "All Books");
 
             break;
         case MenuOptions.Exit:

@@ -162,11 +162,11 @@ class ConsoleHelper
         return (title, author, pageCount, currentOption);
     }
 
-    public static void DisplayBooks(List<Book> books)
+    public static void DisplayBooks(List<Book> books, string message)
     {
         Console.ResetColor();
         Console.Clear();
-        PrintCentered("All Books");
+        PrintCentered(message);
         PrintCentered("Press Any Key to go back");
 
         foreach (Book book in books)
