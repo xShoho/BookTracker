@@ -102,6 +102,13 @@ class ConsoleHelper
             }
         }
 
+        Genre genre = SelectGenre();
+
+        return (title, author, pageCount, genre);
+    }
+
+    public static Genre SelectGenre()
+    {
         bool selecting = true;
         Genre currentOption = Genre.Fiction;
 
@@ -159,7 +166,7 @@ class ConsoleHelper
             }
         }
 
-        return (title, author, pageCount, currentOption);
+        return currentOption;
     }
 
     public static int SelectRead()
