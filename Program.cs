@@ -9,17 +9,18 @@ string message = "Welcome To BookTracker";
 while (running)
 {
     MenuOptions userMenuAction = ConsoleHelper.DisplayMainMenu(message);
+    message = "Welcome To BookTracker";
 
     switch (userMenuAction)
     {
         case MenuOptions.AddNewBook:
             var (title, author, pageCount, genre) = ConsoleHelper.AddNewBookMenu();
             bookService.AddBook(title, author, genre, pageCount);
-
-            running = false;
+            message = "Book Added";
 
             break;
         case MenuOptions.ViewAllBooks:
+            ConsoleHelper.DisplayBooks(bookService.GetAllBooks());
 
             break;
         case MenuOptions.Exit:

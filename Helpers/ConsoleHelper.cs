@@ -162,6 +162,22 @@ class ConsoleHelper
         return (title, author, pageCount, currentOption);
     }
 
+    public static void DisplayBooks(List<Book> books)
+    {
+        Console.ResetColor();
+        Console.Clear();
+        PrintCentered("All Books");
+        PrintCentered("Press Any Key to go back");
+
+        foreach (Book book in books)
+        {
+            Console.WriteLine($"   {book}");
+        }
+
+        var key = Console.ReadKey();
+        return;
+    }
+
     private static void PrintCentered(string? text, int width = 50)
     {
         int textWithPadding = text.Length + 2;
