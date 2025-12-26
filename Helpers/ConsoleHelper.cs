@@ -1,41 +1,34 @@
 namespace BookTracker.Helpers;
 
+using System.ComponentModel;
+using System.Reflection;
+using BookTracker.Models;
+
 class ConsoleHelper
 {
-    public static int DisplayMainMenu(string? message = "Welcome To BookTracker")
+    public static MenuOptions DisplayMainMenu(string message = "Welcome To BookTracker")
     {
-        var options = new List<string>();
-        options.Add("Add New Book");
-        options.Add("View All Books");
-        options.Add("View Books By Status");
-        options.Add("View Books By Genre");
-        options.Add("Mark Book As Read");
-        options.Add("Remove Book");
-        options.Add("View Statistics");
-        options.Add("Exit");
+        MenuOptions currentOption = MenuOptions.AddNewBook;
 
-        int currentOption = 0;
+        bool selecting = true;
 
-        bool running = true;
-
-        while (running)
+        while (selecting)
         {
             Console.Clear();
             Console.ResetColor();
-            if (message != string.Empty)
-                PrintCentered(message);
+            PrintCentered(message);
 
-            foreach (var (option, index) in options.Select((value, idx) => (value, idx)))
+            foreach (MenuOptions option in Enum.GetValues(typeof(MenuOptions)))
             {
-                if (currentOption == index)
+                if (currentOption == option)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"  {option}");
+                    Console.WriteLine($">  {GetDescription(option)}");
                 }
                 else
                 {
                     Console.ResetColor();
-                    Console.WriteLine($"   {option}");
+                    Console.WriteLine($"   {GetDescription(option)}");
                 }
             }
 
@@ -44,7 +37,7 @@ class ConsoleHelper
             switch (key.Key)
             {
                 case ConsoleKey.DownArrow:
-                    if (currentOption < options.Count - 1)
+                    if (currentOption < (MenuOptions)Enum.GetValues(typeof(MenuOptions)).Length - 1)
                         currentOption++;
 
                     break;
@@ -54,7 +47,7 @@ class ConsoleHelper
 
                     break;
                 case ConsoleKey.J:
-                    if (currentOption < options.Count - 1)
+                    if (currentOption < (MenuOptions)Enum.GetValues(typeof(MenuOptions)).Length - 1)
                         currentOption++;
 
                     break;
@@ -64,17 +57,108 @@ class ConsoleHelper
 
                     break;
                 case ConsoleKey.Enter:
-                    running = false;
+                    selecting = false;
 
                     break;
                 case ConsoleKey.L:
-                    running = false;
+                    selecting = false;
 
                     break;
             }
         }
 
         return currentOption;
+    }
+
+    public static (string, string, int, Genre) AddNewBookMenu()
+    {
+        Console.Clear();
+        bool input = true;
+        PrintCentered("Add New Book");
+        string? title = string.Empty;
+        string? author = string.Empty;
+        int pageCount = 0;
+
+        while (input)
+        {
+            Console.Write("Title: ");
+            title = Console.ReadLine();
+
+            Console.Write("Author: ");
+            author = Console.ReadLine();
+
+            Console.Write("Pages: ");
+            string? pages = Console.ReadLine();
+
+            if (int.TryParse(pages, out pageCount))
+            {
+                input = false;
+            }
+            else
+            {
+                Console.Clear();
+                PrintCentered("Invalid input, page is not a number");
+            }
+        }
+
+        bool selecting = true;
+        Genre currentOption = Genre.Fiction;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered("Select Genre");
+
+            foreach (Genre option in Enum.GetValues(typeof(Genre)))
+            {
+                if (currentOption == option)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {GetDescription(option)}");
+                }
+                else
+                {
+                    Console.ResetColor();
+                    Console.WriteLine($"   {GetDescription(option)}");
+                }
+            }
+
+            var key = Console.ReadKey(true);
+
+            switch (key.Key)
+            {
+                case ConsoleKey.DownArrow:
+                    if (currentOption < (Genre)Enum.GetValues(typeof(Genre)).Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.UpArrow:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.J:
+                    if (currentOption < (Genre)Enum.GetValues(typeof(Genre)).Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.K:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.Enter:
+                    selecting = false;
+
+                    break;
+                case ConsoleKey.L:
+                    selecting = false;
+
+                    break;
+            }
+        }
+
+        return (title, author, pageCount, currentOption);
     }
 
     private static void PrintCentered(string? text, int width = 50)
@@ -93,5 +177,12 @@ class ConsoleHelper
         string right = new string('=', remainingSpace - equalsPerSide);
 
         Console.WriteLine($"{left} {text} {right}\n");
+    }
+
+    private static string GetDescription(Enum value)
+    {
+        FieldInfo field = value.GetType().GetField(value.ToString());
+        DescriptionAttribute attribute = field.GetCustomAttribute<DescriptionAttribute>();
+        return attribute?.Description ?? value.ToString();
     }
 }
