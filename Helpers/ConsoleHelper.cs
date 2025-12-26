@@ -102,12 +102,12 @@ class ConsoleHelper
             }
         }
 
-        Genre genre = SelectGenre();
+        Genre genre = SelectGenreMenu();
 
         return (title, author, pageCount, genre);
     }
 
-    public static Genre SelectGenre()
+    public static Genre SelectGenreMenu()
     {
         bool selecting = true;
         Genre currentOption = Genre.Fiction;
@@ -169,7 +169,7 @@ class ConsoleHelper
         return currentOption;
     }
 
-    public static int SelectRead()
+    public static int SelectReadMenu()
     {
         string[] options = { "Read", "Unread" };
         int currentOption = 0;
@@ -266,7 +266,7 @@ class ConsoleHelper
         Console.WriteLine($"{left} {text} {right}\n");
     }
 
-    private static string GetDescription(Enum value)
+    public static string GetDescription(Enum value)
     {
         FieldInfo field = value.GetType().GetField(value.ToString());
         DescriptionAttribute attribute = field.GetCustomAttribute<DescriptionAttribute>();
