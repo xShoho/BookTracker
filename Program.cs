@@ -23,6 +23,16 @@ while (running)
             ConsoleHelper.DisplayBooks(bookService.GetAllBooks(), "All Books");
 
             break;
+        case MenuOptions.ViewBooksByStatus:
+            // 0 - Read
+            // 1 - Unread
+            int userSelection = ConsoleHelper.SelectRead();
+            bool read = userSelection == 0 ? true : false;
+            string readString = read ? "Read" : "Unread";
+
+            ConsoleHelper.DisplayBooks(bookService.GetBooksByStatus(read), $"{readString} Books");
+
+            break;
         case MenuOptions.Exit:
             running = false;
 

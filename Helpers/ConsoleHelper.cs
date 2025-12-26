@@ -162,6 +162,69 @@ class ConsoleHelper
         return (title, author, pageCount, currentOption);
     }
 
+    public static int SelectRead()
+    {
+        string[] options = { "Read", "Unread" };
+        int currentOption = 0;
+        bool selecting = true;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered("Choose Status");
+
+            foreach (var (option, index) in options.Select((value, idx) => (value, idx)))
+            {
+                if (currentOption == index)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {option}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"   {option}");
+                }
+            }
+
+            var key = Console.ReadKey();
+
+            switch (key.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.K:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.J:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.Enter:
+                    selecting = false;
+
+                    break;
+                case ConsoleKey.L:
+                    selecting = false;
+
+                    break;
+            }
+        }
+
+        return currentOption;
+    }
+
     public static void DisplayBooks(List<Book> books, string message)
     {
         Console.ResetColor();
