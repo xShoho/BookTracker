@@ -231,6 +231,288 @@ class ConsoleHelper
         return currentOption;
     }
 
+    public static int BookMarkingOptionMenu(List<Book> books)
+    {
+        string[] options = { "Pick from a list", "Mark By ID" };
+        int currentOption = 0;
+        bool selecting = true;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered("Mark Book as Read");
+
+            foreach (var (value, index) in options.Select((value, idx) => (value, idx)))
+            {
+                if (currentOption == index)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {value}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"   {value}");
+                }
+            }
+
+            var key = Console.ReadKey();
+
+            switch (key.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.K:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.J:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.Enter:
+                    selecting = false;
+
+                    break;
+                case ConsoleKey.L:
+                    selecting = false;
+
+                    break;
+            }
+        }
+
+        // 0 - Pick from a list
+        // 1 - provide id
+
+        if (currentOption == 0)
+        {
+            selecting = true;
+            int currentBook = 0;
+
+            while (selecting)
+            {
+                Console.Clear();
+                PrintCentered("Select Book");
+
+                foreach (var (value, id) in books.Select((value, idx) => (value, idx)))
+                {
+                    if (currentBook == id)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($">  {value}");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"   {value}");
+                    }
+                }
+
+                var key = Console.ReadKey();
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (currentBook > 0)
+                            currentBook--;
+
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (currentBook < books.Count - 1)
+                            currentBook++;
+
+                        break;
+                    case ConsoleKey.J:
+                        if (currentBook < books.Count - 1)
+                            currentBook++;
+
+                        break;
+                    case ConsoleKey.K:
+                        if (currentBook > 0)
+                            currentBook--;
+
+                        break;
+                    case ConsoleKey.Enter:
+                        selecting = false;
+
+                        break;
+                    case ConsoleKey.L:
+                        selecting = false;
+
+                        break;
+                }
+            }
+            return currentBook + 1;
+        }
+        else
+        {
+            bool inputting = true;
+            string msg = "Input ID";
+            int id = 0;
+
+            while (inputting)
+            {
+                Console.Clear();
+                PrintCentered(msg);
+
+                Console.Write("ID: ");
+                string? userInput = Console.ReadLine();
+
+                if (int.TryParse(userInput, out int userInputInt))
+                {
+                    // Valid number
+                    id = userInputInt;
+                    inputting = false;
+                }
+                else
+                {
+                    msg = "Invalid input, not a number";
+                }
+            }
+
+            return id;
+        }
+    }
+
+    public static int BookRateDecisionMenu()
+    {
+        bool selecting = true;
+        string[] options = { "Yes", "No" };
+        int currentOption = 0;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered("Do you want to rate this book?");
+
+            foreach (var (value, id) in options.Select((value, idx) => (value, idx)))
+            {
+                if (currentOption == id)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {value}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"   {value}");
+                }
+            }
+
+            var key = Console.ReadKey();
+
+            switch (key.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.K:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.J:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.Enter:
+                    selecting = false;
+
+                    break;
+                case ConsoleKey.L:
+                    selecting = false;
+
+                    break;
+            }
+        }
+
+        // 0 - rate
+        // 1 - don't rate
+
+        return currentOption;
+    }
+
+    public static int RateSelection()
+    {
+        string[] options = { "1", "2", "3", "4", "5" };
+        bool selecting = true;
+        int currentOption = 0;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered("Choose Rating");
+
+            foreach (var (value, id) in options.Select((value, idx) => (value, idx)))
+            {
+                if (currentOption == id)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {value}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"   {value}");
+                }
+            }
+
+            var key = Console.ReadKey();
+
+            switch (key.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.K:
+                    if (currentOption > 0)
+                        currentOption--;
+
+                    break;
+                case ConsoleKey.J:
+                    if (currentOption < options.Length - 1)
+                        currentOption++;
+
+                    break;
+                case ConsoleKey.Enter:
+                    selecting = false;
+
+                    break;
+                case ConsoleKey.L:
+                    selecting = false;
+
+                    break;
+            }
+        }
+
+        return currentOption + 1;
+    }
+
     public static void DisplayBooks(List<Book> books, string message)
     {
         Console.ResetColor();

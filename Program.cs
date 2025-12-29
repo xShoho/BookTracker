@@ -41,6 +41,17 @@ while (running)
             );
 
             break;
+        case MenuOptions.MarkBookAsRead:
+            int bookID = ConsoleHelper.BookMarkingOptionMenu(bookService.GetAllBooks());
+            int userRateDecision = ConsoleHelper.BookRateDecisionMenu();
+            int? rate = null;
+
+            if (userRateDecision == 0)
+                rate = ConsoleHelper.RateSelection();
+
+            bookService.MarkAsRead(bookID, rate);
+
+            break;
         case MenuOptions.Exit:
             running = false;
 
