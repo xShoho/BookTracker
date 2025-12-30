@@ -10,70 +10,15 @@ class ConsoleHelper
     {
         MenuOptions currentOption = MenuOptions.AddNewBook;
 
-        bool selecting = true;
-
-        while (selecting)
-        {
-            Console.Clear();
-            PrintCentered(message);
-
-            foreach (MenuOptions option in Enum.GetValues(typeof(MenuOptions)))
-            {
-                if (currentOption == option)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($">  {GetDescription(option)}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"   {GetDescription(option)}");
-                }
-            }
-
-            var key = Console.ReadKey(true);
-
-            switch (key.Key)
-            {
-                case ConsoleKey.DownArrow:
-                    if (currentOption < (MenuOptions)Enum.GetValues(typeof(MenuOptions)).Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.UpArrow:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.J:
-                    if (currentOption < (MenuOptions)Enum.GetValues(typeof(MenuOptions)).Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.K:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.Enter:
-                    selecting = false;
-
-                    break;
-                case ConsoleKey.L:
-                    selecting = false;
-
-                    break;
-            }
-        }
+        HandleSelection(ref currentOption, message);
 
         return currentOption;
     }
 
     public static (string, string, int, Genre) AddNewBookMenu()
     {
-        Console.Clear();
-        Console.ResetColor();
         bool input = true;
+        Console.Clear();
         PrintCentered("Add New Book");
         string? title = string.Empty;
         string? author = string.Empty;
@@ -101,257 +46,52 @@ class ConsoleHelper
             }
         }
 
-        Genre genre = SelectGenreMenu();
+        Genre currentOption = Genre.Fiction;
 
-        return (title, author, pageCount, genre);
+        HandleSelection(ref currentOption, "Select Genre");
+
+        return (title, author, pageCount, currentOption);
     }
 
     public static Genre SelectGenreMenu()
     {
-        bool selecting = true;
         Genre currentOption = Genre.Fiction;
 
-        while (selecting)
-        {
-            Console.Clear();
-            PrintCentered("Select Genre");
-
-            foreach (Genre option in Enum.GetValues(typeof(Genre)))
-            {
-                if (currentOption == option)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($">  {GetDescription(option)}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"   {GetDescription(option)}");
-                }
-            }
-
-            var key = Console.ReadKey(true);
-
-            switch (key.Key)
-            {
-                case ConsoleKey.DownArrow:
-                    if (currentOption < (Genre)Enum.GetValues(typeof(Genre)).Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.UpArrow:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.J:
-                    if (currentOption < (Genre)Enum.GetValues(typeof(Genre)).Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.K:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.Enter:
-                    selecting = false;
-
-                    break;
-                case ConsoleKey.L:
-                    selecting = false;
-
-                    break;
-            }
-        }
+        HandleSelection(ref currentOption, "Select Genre");
 
         return currentOption;
     }
 
     public static int SelectReadMenu()
     {
-        string[] options = { "Read", "Unread" };
+        List<string> options = new List<string>();
+        options.Add("Read");
+        options.Add("Unread");
         int currentOption = 0;
-        bool selecting = true;
 
-        while (selecting)
-        {
-            Console.Clear();
-            PrintCentered("Choose Status");
-
-            foreach (var (option, index) in options.Select((value, idx) => (value, idx)))
-            {
-                if (currentOption == index)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($">  {option}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"   {option}");
-                }
-            }
-
-            var key = Console.ReadKey();
-
-            switch (key.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.DownArrow:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.K:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.J:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.Enter:
-                    selecting = false;
-
-                    break;
-                case ConsoleKey.L:
-                    selecting = false;
-
-                    break;
-            }
-        }
+        HandleSelection(ref currentOption, options, "Select Status");
 
         return currentOption;
     }
 
     public static int BookMarkingOptionMenu(List<Book> books)
     {
-        string[] options = { "Pick from a list", "Mark By ID" };
+        List<string> options = new List<string>();
+        options.Add("Pick from a List");
+        options.Add("Mark by ID");
         int currentOption = 0;
-        bool selecting = true;
 
-        while (selecting)
-        {
-            Console.Clear();
-            PrintCentered("Mark Book as Read");
-
-            foreach (var (value, index) in options.Select((value, idx) => (value, idx)))
-            {
-                if (currentOption == index)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($">  {value}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"   {value}");
-                }
-            }
-
-            var key = Console.ReadKey();
-
-            switch (key.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.DownArrow:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.K:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.J:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.Enter:
-                    selecting = false;
-
-                    break;
-                case ConsoleKey.L:
-                    selecting = false;
-
-                    break;
-            }
-        }
+        HandleSelection(ref currentOption, options, "Mark Book as Read");
 
         // 0 - Pick from a list
         // 1 - provide id
 
         if (currentOption == 0)
         {
-            selecting = true;
             int currentBook = 0;
 
-            while (selecting)
-            {
-                Console.Clear();
-                PrintCentered("Select Book");
+            HandleSelection(ref currentBook, books, "Pick a book");
 
-                foreach (var (value, id) in books.Select((value, idx) => (value, idx)))
-                {
-                    if (currentBook == id)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($">  {value}");
-                        Console.ResetColor();
-                    }
-                    else
-                    {
-                        Console.WriteLine($"   {value}");
-                    }
-                }
-
-                var key = Console.ReadKey();
-
-                switch (key.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                        if (currentBook > 0)
-                            currentBook--;
-
-                        break;
-                    case ConsoleKey.DownArrow:
-                        if (currentBook < books.Count - 1)
-                            currentBook++;
-
-                        break;
-                    case ConsoleKey.J:
-                        if (currentBook < books.Count - 1)
-                            currentBook++;
-
-                        break;
-                    case ConsoleKey.K:
-                        if (currentBook > 0)
-                            currentBook--;
-
-                        break;
-                    case ConsoleKey.Enter:
-                        selecting = false;
-
-                        break;
-                    case ConsoleKey.L:
-                        selecting = false;
-
-                        break;
-                }
-            }
             return currentBook + 1;
         }
         else
@@ -386,63 +126,12 @@ class ConsoleHelper
 
     public static int BookRateDecisionMenu()
     {
-        bool selecting = true;
-        string[] options = { "Yes", "No" };
+        List<string> options = new List<string>();
+        options.Add("Yes");
+        options.Add("No");
         int currentOption = 0;
 
-        while (selecting)
-        {
-            Console.Clear();
-            PrintCentered("Do you want to rate this book?");
-
-            foreach (var (value, id) in options.Select((value, idx) => (value, idx)))
-            {
-                if (currentOption == id)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($">  {value}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"   {value}");
-                }
-            }
-
-            var key = Console.ReadKey();
-
-            switch (key.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.DownArrow:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.K:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.J:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.Enter:
-                    selecting = false;
-
-                    break;
-                case ConsoleKey.L:
-                    selecting = false;
-
-                    break;
-            }
-        }
+        HandleSelection(ref currentOption, options, "Do you want to rate a book?");
 
         // 0 - rate
         // 1 - don't rate
@@ -452,63 +141,10 @@ class ConsoleHelper
 
     public static int RateSelection()
     {
-        string[] options = { "1", "2", "3", "4", "5" };
-        bool selecting = true;
+        List<string> options = new List<string>() { "1", "2", "3", "4", "5" };
         int currentOption = 0;
 
-        while (selecting)
-        {
-            Console.Clear();
-            PrintCentered("Choose Rating");
-
-            foreach (var (value, id) in options.Select((value, idx) => (value, idx)))
-            {
-                if (currentOption == id)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($">  {value}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"   {value}");
-                }
-            }
-
-            var key = Console.ReadKey();
-
-            switch (key.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.DownArrow:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.K:
-                    if (currentOption > 0)
-                        currentOption--;
-
-                    break;
-                case ConsoleKey.J:
-                    if (currentOption < options.Length - 1)
-                        currentOption++;
-
-                    break;
-                case ConsoleKey.Enter:
-                    selecting = false;
-
-                    break;
-                case ConsoleKey.L:
-                    selecting = false;
-
-                    break;
-            }
-        }
+        HandleSelection(ref currentOption, options, "Pick a rate");
 
         return currentOption + 1;
     }
@@ -527,6 +163,117 @@ class ConsoleHelper
 
         var key = Console.ReadKey();
         return;
+    }
+
+    private static void HandleSelection<T>(ref int currentOption, List<T> collection, string msg)
+    {
+        bool selecting = true;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered(msg);
+
+            foreach (var (value, id) in collection.Select((value, idx) => (value, idx)))
+            {
+                if (currentOption == id)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {value}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"   {value}");
+                }
+            }
+
+            var key = Console.ReadKey();
+
+            if ((key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.K) && currentOption > 0)
+                currentOption--;
+            if (
+                (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.J)
+                && currentOption < collection.Count - 1
+            )
+                currentOption++;
+            if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.L)
+                selecting = false;
+        }
+    }
+
+    private static void HandleSelection(ref MenuOptions currentOption, string msg)
+    {
+        bool selecting = true;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered(msg);
+
+            foreach (MenuOptions option in Enum.GetValues(typeof(MenuOptions)))
+            {
+                if (currentOption == option)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {GetDescription(option)}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"   {GetDescription(option)}");
+                }
+            }
+
+            var key = Console.ReadKey(true);
+
+            if ((key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.K) && currentOption > 0)
+                currentOption--;
+            if (
+                (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.J)
+                && currentOption < (MenuOptions)Enum.GetValues(typeof(MenuOptions)).Length - 1
+            )
+                currentOption++;
+            if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.L)
+                selecting = false;
+        }
+    }
+
+    private static void HandleSelection(ref Genre currentOption, string msg)
+    {
+        bool selecting = true;
+
+        while (selecting)
+        {
+            Console.Clear();
+            PrintCentered(msg);
+
+            foreach (Genre option in Enum.GetValues(typeof(Genre)))
+            {
+                if (currentOption == option)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($">  {GetDescription(option)}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"   {GetDescription(option)}");
+                }
+            }
+
+            var key = Console.ReadKey(true);
+
+            if ((key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.K) && currentOption > 0)
+                currentOption--;
+            if (
+                (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.J)
+                && currentOption < (Genre)Enum.GetValues(typeof(Genre)).Length - 1
+            )
+                currentOption++;
+            if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.L)
+                selecting = false;
+        }
     }
 
     private static void PrintCentered(string? text, int width = 50)
