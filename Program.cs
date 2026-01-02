@@ -21,17 +21,17 @@ while (running)
 
     switch (userMenuAction)
     {
-        case 0:
+        case 0: // Add Book
             var (title, author, pageCount, genre) = ConsoleHelper.AddNewBookMenu();
             bookService.AddBook(title, author, genre, pageCount);
             message = "Book Added";
 
             break;
-        case 1:
+        case 1: // View Books
             ConsoleHelper.DisplayBooks(bookService.GetAllBooks(), "All Books");
 
             break;
-        case 2:
+        case 2: // View Books By Status
             // 0 - Read
             // 1 - Unread
             int userStatusSelection = ConsoleHelper.SelectReadMenu();
@@ -41,7 +41,7 @@ while (running)
             ConsoleHelper.DisplayBooks(bookService.GetBooksByStatus(read), $"{readString} Books");
 
             break;
-        case 3:
+        case 3: // View Books By Genre
             Genre userGenreSelection = ConsoleHelper.SelectGenreMenu();
             ConsoleHelper.DisplayBooks(
                 bookService.GetBooksByGenre(userGenreSelection),
@@ -49,15 +49,20 @@ while (running)
             );
 
             break;
-        case 4:
-            int bookID = ConsoleHelper.BookMarkingOptionMenu(bookService.GetAllBooks());
+        case 4: // Mark Book As Read
+            int bookToMark = ConsoleHelper.HandleBookPick(bookService.GetAllBooks());
             int userRateDecision = ConsoleHelper.BookRateDecisionMenu();
             int? rate = null;
 
             if (userRateDecision == 0)
                 rate = ConsoleHelper.RateSelection();
 
-            bookService.MarkAsRead(bookID, rate);
+            bookService.MarkAsRead(bookToMark, rate);
+
+            break;
+        case 5: // Remove Book
+            int bookToRemove = ConsoleHelper.HandleBookPick(bookService.GetAllBooks());
+            bookService.RemoveBook(bookToRemove);
 
             break;
         case 7:

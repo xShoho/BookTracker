@@ -85,56 +85,6 @@ class ConsoleHelper
         return currentOption;
     }
 
-    public static int BookMarkingOptionMenu(List<Book> books)
-    {
-        List<string> options = new List<string>();
-        options.Add("Pick from a List");
-        options.Add("Mark by ID");
-        int currentOption = 0;
-
-        HandleSelection(ref currentOption, options, "Mark Book as Read");
-
-        // 0 - Pick from a list
-        // 1 - provide id
-
-        if (currentOption == 0)
-        {
-            int currentBook = 0;
-
-            HandleSelection(ref currentBook, books, "Pick a book");
-
-            return currentBook + 1;
-        }
-        else
-        {
-            bool inputting = true;
-            string msg = "Input ID";
-            int id = 0;
-
-            while (inputting)
-            {
-                Console.Clear();
-                PrintCentered(msg);
-
-                Console.Write("ID: ");
-                string? userInput = Console.ReadLine();
-
-                if (int.TryParse(userInput, out int userInputInt))
-                {
-                    // Valid number
-                    id = userInputInt;
-                    inputting = false;
-                }
-                else
-                {
-                    msg = "Invalid input, not a number";
-                }
-            }
-
-            return id;
-        }
-    }
-
     public static int BookRateDecisionMenu()
     {
         List<string> options = new List<string>();
@@ -174,6 +124,52 @@ class ConsoleHelper
 
         var key = Console.ReadKey();
         return;
+    }
+
+    public static int HandleBookPick(List<Book> books)
+    {
+        int currentBook = 0;
+        int pickMethod = BookPickMethod();
+        string msg = "Pick a book";
+
+        if (pickMethod == 0)
+        {
+            HandleSelection(ref currentBook, books, msg);
+            currentBook += 1;
+        }
+        else
+        {
+            bool inputting = true;
+
+            while (inputting)
+            {
+                Console.Clear();
+                PrintCentered(msg);
+                Console.Write("> ");
+                string? userInput = Console.ReadLine();
+
+                if (int.TryParse(userInput, out currentBook))
+                {
+                    inputting = false;
+                }
+                else
+                {
+                    msg = "Invalid input, not a number";
+                }
+            }
+        }
+
+        return currentBook;
+    }
+
+    private static int BookPickMethod()
+    {
+        List<string> options = new List<string>() { "Pick From List", "Provide an id" };
+        int currentOption = 0;
+
+        HandleSelection(ref currentOption, options, "Pick a Method");
+
+        return currentOption;
     }
 
     private static void HandleSelection<T>(ref int currentOption, List<T> collection, string msg)
