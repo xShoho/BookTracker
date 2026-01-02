@@ -6,11 +6,22 @@ using BookTracker.Models;
 
 class ConsoleHelper
 {
-    public static MenuOptions DisplayMainMenu(string message = "Welcome To BookTracker")
+    public static int DisplayMainMenu(string message = "Welcome To BookTracker")
     {
-        MenuOptions currentOption = MenuOptions.AddNewBook;
+        List<string> options = new List<string>()
+        {
+            "Add New Book",
+            "View All Books",
+            "View Books By Status",
+            "View Books By Genre",
+            "Mark Book as Read",
+            "Remove Book",
+            "View Statistics",
+            "Exit",
+        };
+        int currentOption = 0;
 
-        HandleSelection(ref currentOption, message);
+        HandleSelection(ref currentOption, options, message);
 
         return currentOption;
     }
@@ -195,43 +206,6 @@ class ConsoleHelper
             if (
                 (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.J)
                 && currentOption < collection.Count - 1
-            )
-                currentOption++;
-            if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.L)
-                selecting = false;
-        }
-    }
-
-    private static void HandleSelection(ref MenuOptions currentOption, string msg)
-    {
-        bool selecting = true;
-
-        while (selecting)
-        {
-            Console.Clear();
-            PrintCentered(msg);
-
-            foreach (MenuOptions option in Enum.GetValues(typeof(MenuOptions)))
-            {
-                if (currentOption == option)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($">  {GetDescription(option)}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"   {GetDescription(option)}");
-                }
-            }
-
-            var key = Console.ReadKey(true);
-
-            if ((key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.K) && currentOption > 0)
-                currentOption--;
-            if (
-                (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.J)
-                && currentOption < (MenuOptions)Enum.GetValues(typeof(MenuOptions)).Length - 1
             )
                 currentOption++;
             if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.L)

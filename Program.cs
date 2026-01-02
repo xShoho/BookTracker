@@ -8,22 +8,30 @@ string message = "Welcome To BookTracker";
 
 while (running)
 {
-    MenuOptions userMenuAction = ConsoleHelper.DisplayMainMenu(message);
+    // 0 - Add Book
+    // 1 - View All Books
+    // 2 - View Books By Status
+    // 3 - View Books By Genre
+    // 4 - Mark Books As Read
+    // 5 - Remove Book
+    // 6 - View Statistics
+    // 7 - Exit
+    int userMenuAction = ConsoleHelper.DisplayMainMenu(message);
     message = "Welcome To BookTracker";
 
     switch (userMenuAction)
     {
-        case MenuOptions.AddNewBook:
+        case 0:
             var (title, author, pageCount, genre) = ConsoleHelper.AddNewBookMenu();
             bookService.AddBook(title, author, genre, pageCount);
             message = "Book Added";
 
             break;
-        case MenuOptions.ViewAllBooks:
+        case 1:
             ConsoleHelper.DisplayBooks(bookService.GetAllBooks(), "All Books");
 
             break;
-        case MenuOptions.ViewBooksByStatus:
+        case 2:
             // 0 - Read
             // 1 - Unread
             int userStatusSelection = ConsoleHelper.SelectReadMenu();
@@ -33,7 +41,7 @@ while (running)
             ConsoleHelper.DisplayBooks(bookService.GetBooksByStatus(read), $"{readString} Books");
 
             break;
-        case MenuOptions.ViewBooksByGenre:
+        case 3:
             Genre userGenreSelection = ConsoleHelper.SelectGenreMenu();
             ConsoleHelper.DisplayBooks(
                 bookService.GetBooksByGenre(userGenreSelection),
@@ -41,7 +49,7 @@ while (running)
             );
 
             break;
-        case MenuOptions.MarkBookAsRead:
+        case 4:
             int bookID = ConsoleHelper.BookMarkingOptionMenu(bookService.GetAllBooks());
             int userRateDecision = ConsoleHelper.BookRateDecisionMenu();
             int? rate = null;
@@ -52,7 +60,7 @@ while (running)
             bookService.MarkAsRead(bookID, rate);
 
             break;
-        case MenuOptions.Exit:
+        case 7:
             running = false;
 
             break;
