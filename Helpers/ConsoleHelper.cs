@@ -162,6 +162,20 @@ class ConsoleHelper
         return currentBook;
     }
 
+    public static void DisplayStatistics(int total, int read, double avgRating)
+    {
+        Console.Clear();
+        PrintCentered("Statistics");
+
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine($"Total books:     {total}");
+        Console.WriteLine($"Read books:      {read}");
+        Console.WriteLine($"Average Rating:  {avgRating}");
+        Console.ResetColor();
+        Console.WriteLine("\nPress Any Key to go back.");
+        Console.ReadKey();
+    }
+
     private static int BookPickMethod()
     {
         List<string> options = new List<string>() { "Pick From List", "Provide an id" };

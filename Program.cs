@@ -35,10 +35,10 @@ while (running)
             // 0 - Read
             // 1 - Unread
             int userStatusSelection = ConsoleHelper.SelectReadMenu();
-            bool read = userStatusSelection == 0 ? true : false;
-            string readString = read ? "Read" : "Unread";
+            bool isRead = userStatusSelection == 0 ? true : false;
+            string readString = isRead ? "Read" : "Unread";
 
-            ConsoleHelper.DisplayBooks(bookService.GetBooksByStatus(read), $"{readString} Books");
+            ConsoleHelper.DisplayBooks(bookService.GetBooksByStatus(isRead), $"{readString} Books");
 
             break;
         case 3: // View Books By Genre
@@ -63,6 +63,11 @@ while (running)
         case 5: // Remove Book
             int bookToRemove = ConsoleHelper.HandleBookPick(bookService.GetAllBooks());
             bookService.RemoveBook(bookToRemove);
+
+            break;
+        case 6:
+            var (total, read, avgRating) = bookService.GetStatistics();
+            ConsoleHelper.DisplayStatistics(total, read, avgRating);
 
             break;
         case 7:
